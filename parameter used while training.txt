@@ -1,0 +1,490 @@
+usage: train_shape.py
+       [-h]
+       [--dataroot DATAROOT]
+       [--loadSize LOADSIZE]
+       [--name NAME]
+       [--debug]
+       [--num_views NUM_VIEWS]
+       [--random_multiview]
+       [--gpu_id GPU_ID]
+       [--gpu_ids GPU_IDS]
+       [--num_threads NUM_THREADS]
+       [--serial_batches]
+       [--pin_memory]
+       [--batch_size BATCH_SIZE]
+       [--learning_rate LEARNING_RATE]
+       [--learning_rateC LEARNING_RATEC]
+       [--num_epoch NUM_EPOCH]
+       [--freq_plot FREQ_PLOT]
+       [--freq_save FREQ_SAVE]
+       [--freq_save_ply FREQ_SAVE_PLY]
+       [--no_gen_mesh]
+       [--no_num_eval]
+       [--resume_epoch RESUME_EPOCH]
+       [--continue_train]
+       [--resolution RESOLUTION]
+       [--test_folder_path TEST_FOLDER_PATH]
+       [--sigma SIGMA]
+       [--num_sample_inout NUM_SAMPLE_INOUT]
+       [--num_sample_color NUM_SAMPLE_COLOR]
+       [--z_size Z_SIZE]
+       [--norm NORM]
+       [--norm_color NORM_COLOR]
+       [--num_stack NUM_STACK]
+       [--num_hourglass NUM_HOURGLASS]
+       [--skip_hourglass]
+       [--hg_down HG_DOWN]
+       [--hourglass_dim HOURGLASS_DIM]
+       [--mlp_dim MLP_DIM [MLP_DIM ...]]
+       [--mlp_dim_color MLP_DIM_COLOR [MLP_DIM_COLOR ...]]
+       [--use_tanh]
+       [--random_flip]
+       [--random_trans]
+       [--random_scale]
+       [--no_residual]
+       [--schedule SCHEDULE [SCHEDULE ...]]
+       [--gamma GAMMA]
+       [--color_loss_type COLOR_LOSS_TYPE]
+       [--val_test_error]
+       [--val_train_error]
+       [--gen_test_mesh]
+       [--gen_train_mesh]
+       [--all_mesh]
+       [--num_gen_mesh_test NUM_GEN_MESH_TEST]
+       [--checkpoints_path CHECKPOINTS_PATH]
+       [--load_netG_checkpoint_path LOAD_NETG_CHECKPOINT_PATH]
+       [--load_netC_checkpoint_path LOAD_NETC_CHECKPOINT_PATH]
+       [--results_path RESULTS_PATH]
+       [--load_checkpoint_path LOAD_CHECKPOINT_PATH]
+       [--single SINGLE]
+       [--mask_path MASK_PATH]
+       [--img_path IMG_PATH]
+       [--aug_alstd AUG_ALSTD]
+       [--aug_bri AUG_BRI]
+       [--aug_con AUG_CON]
+       [--aug_sat AUG_SAT]
+       [--aug_hue AUG_HUE]
+       [--aug_blur AUG_BLUR]
+
+options:
+  -h, --help
+    show this
+    help
+    message and
+    exit
+  --random_flip
+    if random
+    flip
+    (default:
+    False)
+  --random_trans
+    if random
+    flip
+    (default:
+    False)
+  --random_scale
+    if random
+    flip
+    (default:
+    False)
+  --no_residual
+    no skip
+    connection
+    in mlp
+    (default:
+    False)
+  --schedule SCHEDULE [SCHEDULE ...]
+    Decrease
+    learning
+    rate at
+    these
+    epochs.
+    (default:
+    [60, 80])
+  --gamma GAMMA
+    LR is
+    multiplied
+    by gamma on
+    schedule.
+    (default:
+    0.1)
+  --color_loss_type COLOR_LOSS_TYPE
+    mse | l1
+    (default:
+    l1)
+  --val_test_error
+    validate
+    errors of
+    test data
+    (default:
+    False)
+  --val_train_error
+    validate
+    errors of
+    train data
+    (default:
+    False)
+  --gen_test_mesh
+    generate
+    test mesh
+    (default:
+    False)
+  --gen_train_mesh
+    generate
+    train mesh
+    (default:
+    False)
+  --all_mesh
+    generate
+    meshs from
+    all
+    hourglass
+    output
+    (default:
+    False)
+  --num_gen_mesh_test NUM_GEN_MESH_TEST
+    how many
+    meshes to
+    generate
+    during
+    testing
+    (default:
+    1)
+  --checkpoints_path CHECKPOINTS_PATH
+    path to
+    save
+    checkpoints
+    (default: .
+    /checkpoint
+    s)
+  --load_netG_checkpoint_path LOAD_NETG_CHECKPOINT_PATH
+    path to
+    save
+    checkpoints
+    (default:
+    None)
+  --load_netC_checkpoint_path LOAD_NETC_CHECKPOINT_PATH
+    path to
+    save
+    checkpoints
+    (default:
+    None)
+  --results_path RESULTS_PATH
+    path to
+    save
+    results ply
+    (default:
+    ./results)
+  --load_checkpoint_path LOAD_CHECKPOINT_PATH
+    path to
+    save
+    results ply
+    (default:
+    None)
+  --single SINGLE
+    single data
+    for
+    training
+    (default: )
+  --mask_path MASK_PATH
+    path for
+    input mask
+    (default:
+    None)
+  --img_path IMG_PATH
+    path for
+    input image
+    (default:
+    None)
+
+Data:
+  --dataroot DATAROOT
+    path to
+    images
+    (data
+    folder)
+    (default:
+    ./data)
+  --loadSize LOADSIZE
+    load size
+    of input
+    image
+    (default:
+    512)
+
+Experiment:
+  --name NAME
+    name of the
+    experiment.
+    It decides
+    where to
+    store
+    samples and
+    models
+    (default:
+    example)
+  --debug
+    debug mode
+    or not
+    (default:
+    False)
+  --num_views NUM_VIEWS
+    How many
+    views to
+    use for
+    multiview
+    network.
+    (default:
+    1)
+  --random_multiview
+    Select
+    random
+    multiview c
+    ombination.
+    (default:
+    False)
+
+Training:
+  --gpu_id GPU_ID
+    gpu id for
+    cuda
+    (default:
+    0)
+  --gpu_ids GPU_IDS
+    gpu ids:
+    e.g. 0
+    0,1,2, 0,2,
+    -1 for CPU
+    mode
+    (default:
+    0)
+  --num_threads NUM_THREADS
+    # sthreads
+    for loading
+    data
+    (default:
+    1)
+  --serial_batches
+    if true,
+    takes
+    images in
+    order to
+    make
+    batches,
+    otherwise
+    takes them
+    randomly
+    (default:
+    False)
+  --pin_memory
+    pin_memory
+    (default:
+    False)
+  --batch_size BATCH_SIZE
+    input batch
+    size
+    (default:
+    2)
+  --learning_rate LEARNING_RATE
+    adam
+    learning
+    rate
+    (default:
+    0.001)
+  --learning_rateC LEARNING_RATEC
+    adam
+    learning
+    rate
+    (default:
+    0.001)
+  --num_epoch NUM_EPOCH
+    num epoch
+    to train
+    (default:
+    100)
+  --freq_plot FREQ_PLOT
+    freqency of
+    the error
+    plot
+    (default:
+    10)
+  --freq_save FREQ_SAVE
+    freqency of
+    the save_ch
+    eckpoints
+    (default:
+    50)
+  --freq_save_ply FREQ_SAVE_PLY
+    freqency of
+    the save
+    ply
+    (default:
+    100)
+  --no_gen_mesh
+  --no_num_eval
+  --resume_epoch RESUME_EPOCH
+    epoch
+    resuming
+    the
+    training
+    (default:
+    -1)
+  --continue_train
+    continue
+    training:
+    load the
+    latest
+    model
+    (default:
+    False)
+
+Testing:
+  --resolution RESOLUTION
+    # of grid
+    in mesh rec
+    onstruction
+    (default:
+    256)
+  --test_folder_path TEST_FOLDER_PATH
+    the folder
+    of test
+    image
+    (default:
+    None)
+
+Sampling:
+  --sigma SIGMA
+    perturbatio
+    n standard
+    deviation
+    for
+    positions
+    (default:
+    5.0)
+  --num_sample_inout NUM_SAMPLE_INOUT
+    # of
+    sampling
+    points
+    (default:
+    5000)
+  --num_sample_color NUM_SAMPLE_COLOR
+    # of
+    sampling
+    points
+    (default:
+    0)
+  --z_size Z_SIZE
+    z normaliza
+    tion factor
+    (default:
+    200.0)
+
+Model:
+  --norm NORM
+    instance no
+    rmalization
+    or batch no
+    rmalization
+    or group no
+    rmalization
+    (default:
+    group)
+  --norm_color NORM_COLOR
+    instance no
+    rmalization
+    or batch no
+    rmalization
+    or group no
+    rmalization
+    (default:
+    instance)
+  --num_stack NUM_STACK
+    # of
+    hourglass
+    (default:
+    4)
+  --num_hourglass NUM_HOURGLASS
+    # of
+    stacked
+    layer of
+    hourglass
+    (default:
+    2)
+  --skip_hourglass
+    skip
+    connection
+    in
+    hourglass
+    (default:
+    False)
+  --hg_down HG_DOWN
+    ave pool ||
+    conv64 ||
+    conv128
+    (default:
+    ave_pool)
+  --hourglass_dim HOURGLASS_DIM
+    256 | 512
+    (default:
+    256)
+  --mlp_dim MLP_DIM [MLP_DIM ...]
+    # of
+    dimensions
+    of mlp
+    (default:
+    [257, 1024,
+    512, 256,
+    128, 1])
+  --mlp_dim_color MLP_DIM_COLOR [MLP_DIM_COLOR ...]
+    # of
+    dimensions
+    of color
+    mlp
+    (default:
+    [513, 1024,
+    512, 256,
+    128, 3])
+  --use_tanh
+    using tanh
+    after last
+    conv of ima
+    ge_filter
+    network
+    (default:
+    False)
+
+aug:
+  --aug_alstd AUG_ALSTD
+    augmentatio
+    n pca
+    lighting
+    alpha std
+    (default:
+    0.0)
+  --aug_bri AUG_BRI
+    augmentatio
+    n
+    brightness
+    (default:
+    0.0)
+  --aug_con AUG_CON
+    augmentatio
+    n contrast
+    (default:
+    0.0)
+  --aug_sat AUG_SAT
+    augmentatio
+    n
+    saturation
+    (default:
+    0.0)
+  --aug_hue AUG_HUE
+    augmentatio
+    n hue
+    (default:
+    0.0)
+  --aug_blur AUG_BLUR
+    augmentatio
+    n blur
+    (default:
+    0.0)
