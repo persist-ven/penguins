@@ -19,5 +19,5 @@ for filename, content in uploaded.items():
     print(f"{filename} uploaded and saved to {target_path}.")
 '''
 
-with open('/content/upload_files.py', 'w') as f:
+with open('/content/penguins/upload_files.py', 'w') as f:
     f.write(code)
